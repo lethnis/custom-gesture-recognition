@@ -4,7 +4,7 @@ import cv2
 num_classes = 3
 images_per_class = 200
 
-data_dir = "data"
+data_dir = "data/dataset"
 
 cap = cv2.VideoCapture(0)
 
@@ -32,7 +32,7 @@ for i in range(num_classes):
         ret, frame = cap.read()
         cv2.imshow("recording", frame)
         cv2.waitKey(25)
-        cv2.imwrite(os.path.join(data_dir, str(i), str(j) + ".jpg"), frame)
+        cv2.imwrite(os.path.join(data_dir, str(i), str(j) + "_new.jpg"), frame)
 
 cap.release()
 cv2.destroyAllWindows()
