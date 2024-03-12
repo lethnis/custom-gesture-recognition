@@ -28,9 +28,9 @@ for cls in os.listdir(DATA_DIR):
         img_path = os.path.join(DATA_DIR, cls, img)
         img = mp.Image.create_from_file(img_path)
         results = hand_landmarker.detect(img)
-
-        data.extend(utils.extract_hand_landmarks(results))
-        labels.append(cls)
+        hands = utils.extract_hand_landmarks(results)
+        data.extend(hands)
+        labels.extend([cls] * len(hands))
 
 
 with open("data/data.pickle", "wb") as f:
