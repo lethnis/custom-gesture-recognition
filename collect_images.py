@@ -1,38 +1,46 @@
 import os
 import cv2
 
-num_classes = 3
-images_per_class = 200
 
-data_dir = "data/dataset"
+def main():
+    """Program collects images from a webcam and saves them to specified folder.
+    When ready press 'q' to start recording and saving.
+    Default number of classes is 3, and images per each class is 200."""
 
-cap = cv2.VideoCapture(0)
+    NUM_CLASSES = 3
+    IMAGES_PER_CLASS = 200
+    DATA_DIR = "data/dataset"
 
-for i in range(num_classes):
-    os.makedirs(os.path.join(data_dir, str(i)), exist_ok=True)
+    # start capturing video from a webcam with index 0
+    cap = cv2.VideoCapture(0)
 
-    print(f"Collecting data for class {i}")
+    # main loop for recording images for each class (default is 3)
+    for i in range(NUM_CLASSES):
+        # make class directory if it does not exist
+        os.makedirs(os.path.join(DATA_DIR, str(i)), exist_ok=True)
 
-    while True:
-        ret, frame = cap.read()
-        cv2.putText(
-            frame,
-            "Press 'q' to start",
-            (10, frame.shape[0] - 10),
-            cv2.FONT_HERSHEY_COMPLEX,
-            1,
-            (0, 0, 255),
-            2,
-        )
-        cv2.imshow("recording", frame)
-        if cv2.waitKey(25) == ord("q"):
-            break
+        print(f"Collecting data for class {i}")
 
-    for j in range(images_per_class):
-        ret, frame = cap.read()
-        cv2.imshow("recording", frame)
-        cv2.waitKey(25)
-        cv2.imwrite(os.path.join(data_dir, str(i), str(j) + "_new.jpg"), frame)
+        # waiting loop, if 'q' pressed goes to next loop
+        while True:
+            ret, frame = cap.read()
+            cv2.putText(
+                frame, "Press 'q' to start", (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2
+            )
+            cv2.imshow("recording", frame)
+            if cv2.waitKey(25) == ord("q"):
+                break
 
-cap.release()
-cv2.destroyAllWindows()
+        # records and saves images (default is 200)
+        for j in range(IMAGES_PER_CLASS):
+            ret, frame = cap.read()
+            cv2.imshow("recording", frame)
+            cv2.waitKey(25)
+            cv2.imwrite(os.path.join(DATA_DIR, str(i), str(j) + ".jpg"), frame)
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    main()
