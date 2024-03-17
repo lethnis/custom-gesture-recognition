@@ -29,7 +29,7 @@ def main():
     )
 
     # initialize random forest model with default parameters
-    model = RandomForestClassifier()
+    model = RandomForestClassifier(n_estimators=50, max_depth=5)
 
     # train model
     model.fit(train_data, train_labels)

@@ -1,5 +1,7 @@
 import os
 import pickle
+from pathlib import Path
+
 from tqdm import tqdm
 
 import mediapipe as mp
@@ -17,6 +19,9 @@ def main():
     MAX_NUM_HANDS = 2
     DATA_DIR = "data/dataset"
 
+    classes = Path("classes.txt").read_text(encoding="utf-8")
+    dict_classes = {idx: val.strip() for idx, val in enumerate(classes.split(","))}
+
     # specify path to the hand landmarker model and num_hands
     # model should be downloaded manually from the link above
     options = vision.HandLandmarkerOptions(
@@ -32,12 +37,13 @@ def main():
     labels = []
 
     # iterating through every folder and every image
-    for cls in os.listdir(DATA_DIR):
-        print(f"Extracting class {cls}")
-        images_path = os.listdir(os.path.join(DATA_DIR, cls))
+    for idx, val in dict_classes.items():
+
+        print(f"Extracting class '{val}'")
+        images_path = os.listdir(os.path.join(DATA_DIR, str(idx)))
 
         for img in tqdm(images_path):
-            img_path = os.path.join(DATA_DIR, cls, img)
+            img_path = os.path.join(DATA_DIR, str(idx), img)
             # create image as mp.Image file
             img = mp.Image.create_from_file(img_path)
             # detect hands
@@ -50,7 +56,7 @@ def main():
                 # add 1 or more hands
                 data.extend(hands)
                 # add class num depending on how much hands we detected
-                labels.extend([cls] * len(hands))
+                labels.extend([idx] * len(hands))
 
     # save data and labels as dict
     with open("data/data.pickle", "wb") as f:

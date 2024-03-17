@@ -5,9 +5,10 @@ from mediapipe.tasks.python import vision
 from mediapipe.python import solutions
 from mediapipe.framework.formats import landmark_pb2
 import sklearn
+from pathlib import Path
 
-
-classes = {0: "Dog", 1: "Rock", 2: "Phone"}
+text = Path("classes.txt").read_text(encoding="utf-8")
+classes = {idx: val.strip() for idx, val in enumerate(text.split(","))}
 
 MIN_CONFIDENCE = 0.7
 
