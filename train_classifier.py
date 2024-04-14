@@ -29,7 +29,7 @@ def main():
     )
 
     # initialize random forest model with default parameters
-    model = RandomForestClassifier(n_estimators=50, max_depth=5)
+    model = RandomForestClassifier(n_estimators=100, max_depth=7)
 
     # train model
     model.fit(train_data, train_labels)
@@ -37,10 +37,10 @@ def main():
     # check how model performs of unseen data
     pred_labels = model.predict(test_data)
 
-    # get the acuracy
+    # get the accuracy
     score = accuracy_score(test_labels, pred_labels)
 
-    # Correctly classified 100.00% of samples
+    # Correctly classified 94.87% of samples in my case
     print(f"Correctly classified {score*100:.2f}% of samples")
 
     with open("data/model.pickle", "wb") as f:
