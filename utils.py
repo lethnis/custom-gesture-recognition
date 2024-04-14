@@ -10,7 +10,7 @@ from pathlib import Path
 text = Path("classes.txt").read_text(encoding="utf-8")
 classes = {idx: val.strip() for idx, val in enumerate(text.split(","))}
 
-MIN_CONFIDENCE = 0.7
+MIN_CONFIDENCE = 0.5
 
 
 def draw_landmarks(img: mp.Image, detection_results: vision.HandLandmarkerResult) -> np.array:
@@ -96,6 +96,6 @@ def classify_and_draw(
                 # if confidence is less than MAX_CONFIDENCE
                 class_name = "Unknown"
 
-            cv2.putText(img, class_name, (x_min, y_min - 10), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 0), 2)
+            cv2.putText(img, class_name, (x_min, y_min - 10), cv2.FONT_HERSHEY_COMPLEX, 1.5, (0, 0, 255), 2)
 
     return img
